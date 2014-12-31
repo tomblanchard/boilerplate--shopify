@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           cwd: 'src/scss/framework',
           src: ['**/*.scss'],
           dest: 'shop/assets',
-          ext: '.css.liquid'
+          ext: '.css'
         }]
       }
     },
@@ -37,7 +37,27 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'shop/assets',
-          src: ['*.css.liquid'],
+          src: ['*.css'],
+          dest: 'shop/assets'
+        }]
+      }
+    },
+
+
+    cssmin: {
+      dist: {
+        options : {
+          advanced: false,
+          aggressiveMerging: false,
+          keepBreaks: true,
+          keepSpecialComments: '*',
+          rebase: false,
+          shorthandCompacting: false
+        },
+        files: [{
+          expand: true,
+          cwd: 'shop/assets',
+          src: ['*.css'],
           dest: 'shop/assets'
         }]
       }
@@ -45,7 +65,7 @@ module.exports = function(grunt) {
 
 
     cssbeautifier : {
-      files : ['shop/assets/*.css.liquid'],
+      files : ['shop/assets/*.css'],
       options : {
         indent: '  ',
         openbrace: 'end-of-line',
@@ -56,9 +76,9 @@ module.exports = function(grunt) {
 
     shopify: {
       options: {
-        api_key: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-        password: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-        url: 'XXXXXXXXXX.myshopify.com',
+        api_key: '76bf4dc1f4cbdebba23ee7c83ddd65aa',
+        password: 'eb35c842d5b2b1d306db0336642e382e',
+        url: 'playground-20.myshopify.com',
         base: 'shop/'
       }
     },
@@ -67,7 +87,7 @@ module.exports = function(grunt) {
     watch: {
       sass: {
         files: 'src/scss/**/*.scss',
-        tasks: ['sass:dist', 'autoprefixer:dist', 'cssbeautifier']
+        tasks: ['sass:dist', 'autoprefixer:dist', 'cssmin:dist', 'cssbeautifier']
       },
 
       shopify: {
@@ -85,6 +105,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
     'sass:dist',
     'autoprefixer:dist',
+    'cssmin:dist',
     'cssbeautifier',
     'shopify:upload',
     'watch'
