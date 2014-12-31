@@ -11,7 +11,7 @@
 
         <ul class="js-os-cycle">
           {% for image in product.images %}
-            <li class="js-os-cycle-slide">
+            <li class="js-os-cycle-slide" style="{% unless forloop.first %}display:none;{% endunless %}">
               <a href="{{ image | img_url: '1024x1024' }}">
                 <img class="js-os-cycle-img" src="{{ image | img_url: 'grande' }}" alt="{{ product.title | escape }}">
               </a>
