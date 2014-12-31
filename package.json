@@ -9,8 +9,6 @@
     "grunt-contrib-sass": "~0.6.0",
     "grunt-autoprefixer": "~0.6.4",
     "growl": "~1.7.0",
-    "grunt-shopify": "~0.6.0",
-    "grunt-contrib-cssmin": "~0.11.0",
-    "grunt-cssbeautifier": "~0.1.2"
+    "grunt-shopify": "~0.6.0"
   }
 }
