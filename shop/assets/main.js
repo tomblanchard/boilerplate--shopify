@@ -99,11 +99,11 @@
     }
 
     function bindAddToCartForm() {
-      $elements.form.unbind('submit').bind('submit', addCartAjax);
+      $elements.form.on('submit', addCartAjax);
     }
 
     function unbindAddToCartForm() {
-      $elements.form.unbind('submit');
+      $elements.form.off('submit');
     }
 
     if (variant) {
