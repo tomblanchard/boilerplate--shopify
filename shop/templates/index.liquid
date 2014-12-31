@@ -1,3 +1,5 @@
+<h1>Products (`collections.frontpage`)</h1>
+
 {% if collections.frontpage.products.size > 0 %}
 
   {% for product in collections.frontpage.products limit:4 %}
@@ -8,6 +10,7 @@
 
 {% endif %}
 
+<h1>Blog posts (`blogs['news']`)</h1>
 
 {% if blogs['news'].articles.size > 0 %}
 
