@@ -75,6 +75,15 @@
       $elements.backorder.html( message );
     }
 
+    function bindAddToCartForm() {
+      unbindAddToCartForm();
+      $elements.form.on('submit', addCartAjax);
+    }
+
+    function unbindAddToCartForm() {
+      $elements.form.off('submit');
+    }
+
     function addCartAjax() {
       $.ajax({
         type: 'POST',
@@ -96,14 +105,6 @@
 
     function addCartError(data) {
       alert( data.responseJSON.message + ' - ' + data.responseJSON.description );
-    }
-
-    function bindAddToCartForm() {
-      $elements.form.on('submit', addCartAjax);
-    }
-
-    function unbindAddToCartForm() {
-      $elements.form.off('submit');
     }
 
     if (variant) {
