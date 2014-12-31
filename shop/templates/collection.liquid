@@ -1,0 +1,19 @@
+{% if collections.frontpage.products.size > 0 %}
+
+  {% paginate collection.products by 10 %}
+
+    {% for product in collection.products %}
+
+      {% include 'content-archive-product' %}
+
+    {% endfor %}
+
+    {% include 'pagination' %}
+
+  {% endpaginate %}
+
+{% else %}
+
+  {% include 'content-none' %}
+
+{% endif %}

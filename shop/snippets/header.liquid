@@ -1,0 +1,24 @@
+<a href="{{ shop.url }}">
+  <img src="{{ 'logo.png' | asset_url }}" alt="">
+  {{ shop.name }}
+</a>
+
+<nav>
+  <ul>
+    {% for link in linklists.main-menu.links %}<!--
+      {% assign child_list_handle = link.title | handleize %}
+   --><li>
+        <a href="{{ link.url }}">{{ link.title }}</a>
+        {% if linklists[child_list_handle].links != blank %}
+          <ul>
+            {% for childlink in linklists[child_list_handle].links %}<!--
+           --><li>
+                <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+              </li><!--
+         -->{% endfor %}
+          </ul>
+        {% endif %}
+      </li><!--
+ -->{% endfor %}
+  </ul>
+</nav>

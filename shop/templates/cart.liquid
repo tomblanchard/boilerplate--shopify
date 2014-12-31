@@ -1,0 +1,29 @@
+{% if cart.item_count > 0 %}
+
+  <form action="/cart" method="post">
+
+    <ul>
+      {% for item in cart.items %}
+        {% include 'content-cart-item' %}
+      {% endfor %}
+    </ul>
+
+    Subtotal: {{ cart.total_price | money }}
+
+    <a href="/collections/all">Continue shopping</a>
+
+    <input type="submit" name="update" value="Update cart">
+
+    <input type="submit" name="checkout" value="Checkout">
+
+    {% if additional_checkout_buttons %}
+      {{ content_for_additional_checkout_buttons }}
+    {% endif %}
+
+  </form>
+
+{% else %}
+
+  {% include 'content-cart-none' %}
+
+{% endif %}

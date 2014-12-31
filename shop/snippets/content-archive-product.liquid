@@ -1,0 +1,25 @@
+<article id="product-{{ product.id }}">
+
+  <h1><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h1>
+
+  <h2><a class="js-quick-view" href="{{ product.url | within: collection }}">Quick view</a></h2>
+
+  <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+
+  <div>
+    {{ product.price | money }}
+  </div>
+
+  {% unless product.available %}
+    <div>
+      Sold out
+    </div>
+  {% endunless  %}
+
+  {% if product.compare_at_price_max > product.price %}
+    <div>
+      On sale from {{ product.compare_at_price | money }}
+    </div>
+  {% endif %}
+
+</article>

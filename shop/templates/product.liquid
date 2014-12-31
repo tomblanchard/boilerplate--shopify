@@ -1,0 +1,83 @@
+<div class="js-single-product">
+
+  <div itemscope itemtype="http://schema.org/Product">
+
+    <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+    <meta itemprop="image" content="{{ product | img_url: 'grande' }}">
+
+    <form class="js-os-form" action="/cart/add" method="post" enctype="multipart/form-data">
+
+      {% if product.images.size > 0 %}
+
+        <ul class="js-os-cycle">
+          {% for image in product.images %}
+            <li class="js-os-cycle-slide">
+              <a href="{{ image | img_url: '1024x1024' }}">
+                <img class="js-os-cycle-img" src="{{ image | img_url: 'grande' }}" alt="{{ product.title | escape }}">
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if product.images.size > 1 %}
+          <ul class="js-os-cycle-pager">
+            {% for image in product.images %}
+              <li>
+                <a href="{{ image | img_url: '1024x1024' }}">
+                  <img src="{{ image | img_url: 'small' }}" alt="{{ image.alt | escape }}">
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+      {% endif %}
+
+      <h1 itemprop="name">{{ product.title }}</h1>
+
+      <div itemprop="description">
+        {{ product.description }}
+      </div>
+
+      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+        {% if product.available %}
+          <link itemprop="availability" href="http://schema.org/InStock">
+        {% else %}
+          <link itemprop="availability" href="http://schema.org/OutOfStock">
+        {% endif %}
+        {% assign variant = product.selected_or_first_available_variant %}
+        <span class="js-os-price" itemprop="price">{{ variant.price | money }}</span>
+        <del class="js-os-compare-price"></del>
+      </div>
+
+      {% assign hide_default_title = false %}
+      {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+        {% assign hide_default_title = true %}
+      {% endif %}
+
+      <div style="{% if hide_default_title %}display:none;{% endif %}">
+        <select id="js-os-select" name="id">
+          {% for variant in product.variants %}
+            <option {% if variant == product.selected_or_first_available_variant %}selected{% endif %} value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="js-os-backorder"></div>
+
+      <div>
+        <input class="js-os-submit" type="submit" name="add" value="Add to cart">
+      </div>
+
+    </form>
+
+  </div>
+
+  <script>
+    GLOBALS['product'] = {{ product | json }};
+    GLOBALS['productTitle'] = '{{ product.title }}';
+    GLOBALS['productHideDefaultTitle'] = {% if hide_default_title %}true{% else %}false{% endif %};
+  </script>
+
+</div>

@@ -1,0 +1,25 @@
+<article id="article-{{ article.id }}">
+
+  <h1><a href="{{ article.url }}">{{ article.title }}</a></h1>
+
+  <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+    {{ article.published_at | date: '%B %d, %Y' }}
+  </time>
+
+  {% if template contains 'article' %}
+
+    {{ article.content }}
+
+  {% else %}
+
+    <p>
+      {% if article.excerpt.size > 0 %}
+        {{ article.excerpt }}
+      {% else %}
+        {{ article.content | strip_html | truncatewords: 100 }}
+      {% endif %}
+    </p>
+
+  {% endif %}
+
+</article>

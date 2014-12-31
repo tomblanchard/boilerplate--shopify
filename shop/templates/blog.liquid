@@ -1,0 +1,19 @@
+{% if blog.articles.size > 0 %}
+
+  {% paginate blog.articles by 10 %}
+
+    {% for article in blog.articles %}
+
+      {% include 'content-article' %}
+
+    {% endfor %}
+
+    {% include 'pagination' %}
+
+  {% endpaginate %}
+
+{% else %}
+
+  {% include 'content-none' %}
+
+{% endif %}

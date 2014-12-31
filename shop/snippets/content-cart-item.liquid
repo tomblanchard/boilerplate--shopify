@@ -1,0 +1,29 @@
+<li>
+
+  <div>
+    {{ item.title }}
+  </div>
+
+  <div>
+    <a href="{{ collection_url }}{{ item.url }}">
+      <img src="{{ item | img_url: 'compact' }}"  alt="{{ item.title | escape }}" />
+    </a>
+  </div>
+
+  <div>
+    {{ item.price | money }}
+  </div>
+
+  <div>
+    <input type="number" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}">
+  </div>
+
+  <div>
+    {{ item.line_price | money }}
+  </div>
+
+  <div>
+    <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Remove</a>
+  </div>
+
+</li>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+  <meta name="viewport" content="width=device-width">
+
+  <title>{{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+
+  <link rel="stylesheet" href="{{ 'style.css' | shopify_asset_url }}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
+
+  {{ content_for_header }}
+
+  <script>
+    var GLOBALS = {
+      shopMoneyFormat: '{{ shop.money_format }}'
+    };
+  </script>
+
+</head>
+
+{% capture body_class %}
+  {% if customer %}customer-logged-in{% endif %}
+  template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}
+{% endcapture %}
+{% assign body_class = body_class | strip_newlines %}
+
+<body class="{{ body_class }}">
+
+  {% include 'header' %}
+
+  {{ content_for_layout }}
+
+  {% include 'footer' %}
+
+  {% include 'scripts' %}
+
+</body>
+</html>

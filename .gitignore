@@ -1,0 +1,4 @@
+.*
+!.gitignore
+!.emptydir
+node_modules
