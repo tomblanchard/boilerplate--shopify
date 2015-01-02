@@ -1,4 +1,4 @@
-<h1>Products (`collections.frontpage`)</h1>
+<h1>Products (`collections.frontpage.products`)</h1>
 
 {% if collections.frontpage.products.size > 0 %}
 
@@ -10,11 +10,11 @@
 
 {% endif %}
 
-<h1>Blog posts (`blogs['news']`)</h1>
+<h1>Articles (`blogs.news.articles`)</h1>
 
-{% if blogs['news'].articles.size > 0 %}
+{% if blogs.news.articles.size > 0 %}
 
-  {% for article in blogs['news'].articles limit:4 %}
+  {% for article in blogs.news.articles limit:4 %}
 
     {% include 'content-article' %}
 
