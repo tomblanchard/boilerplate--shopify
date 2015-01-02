@@ -15,7 +15,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/scss/framework',
           src: ['**/*.scss'],
-          dest: 'shop/assets',
+          dest: 'theme/assets',
           ext: '.min.css'
         }]
       }
@@ -36,9 +36,9 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: 'shop/assets',
+          cwd: 'theme/assets',
           src: ['*.css'],
-          dest: 'shop/assets'
+          dest: 'theme/assets'
         }]
       }
     },
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         api_key: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
         password: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
         url: 'XXXXXXXXXX.myshopify.com',
-        base: 'shop/'
+        base: 'theme/'
       }
     },
 
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
       },
 
       shopify: {
-        files: ['shop/**/*'],
+        files: ['theme/**/*'],
         tasks: ['shopify']
       }
     }
