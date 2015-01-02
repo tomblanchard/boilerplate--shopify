@@ -17,7 +17,6 @@
       cycle: $('.js-os-cycle'),
       cycleSlide: $('.js-os-cycle-slide'),
       cyclePager: $('.js-os-cycle-pager'),
-      cycleImg: $('.js-os-cycle-img'),
       submit: $('.js-os-submit'),
       backorder: $('.js-os-backorder'),
       form: $('.js-os-form')
@@ -50,7 +49,7 @@
     function updateImage() {
       var newImage = Shopify.Image.getFileName( variant.featured_image.src );
       $elements.cycleSlide.not('.cycle-sentinel').each(function(index) {
-        var matchedImage = Shopify.Image.getFileName( $(this).find($elements.cycleImg).attr('src') );
+        var matchedImage = Shopify.Image.getFileName( $(this).attr('href') );
         if( newImage == matchedImage ) {
           $elements.cycle.cycle('goto', index);
         }

@@ -31,7 +31,7 @@
   {% if customer %}customer-logged-in{% endif %}
   template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}
 {% endcapture %}
-{% assign body_class = body_class | strip_newlines %}
+{% assign body_class = body_class | strip_newlines | strip %}
 
 <body class="{{ body_class }}">
 

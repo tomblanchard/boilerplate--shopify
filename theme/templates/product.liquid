@@ -9,26 +9,22 @@
 
       {% if product.images.size > 0 %}
 
-        <ul class="js-os-cycle">
+        <div class="js-os-cycle">
           {% for image in product.images %}
-            <li class="js-os-cycle-slide" style="{% unless forloop.first %}display:none;{% endunless %}">
-              <a href="{{ image | img_url: '1024x1024' }}">
-                <img class="js-os-cycle-img" src="{{ image | img_url: 'grande' }}" alt="{{ product.title | escape }}">
-              </a>
-            </li>
+            <a class="js-os-cycle-slide" href="{{ image | img_url: '1024x1024' }}" style="{% unless forloop.first %}display:none;{% endunless %}">
+              <img src="{{ image | img_url: 'grande' }}" alt="{{ product.title | escape }}">
+            </a>
           {% endfor %}
-        </ul>
+        </div>
 
         {% if product.images.size > 1 %}
-          <ul class="js-os-cycle-pager">
+          <div class="js-os-cycle-pager">
             {% for image in product.images %}
-              <li>
-                <a href="{{ image | img_url: '1024x1024' }}">
-                  <img src="{{ image | img_url: 'small' }}" alt="{{ image.alt | escape }}">
-                </a>
-              </li>
+              <a href="{{ image | img_url: '1024x1024' }}">
+                <img src="{{ image | img_url: 'small' }}" alt="{{ image.alt | escape }}">
+              </a>
             {% endfor %}
-          </ul>
+          </div>
         {% endif %}
 
       {% endif %}
