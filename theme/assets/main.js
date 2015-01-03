@@ -57,11 +57,11 @@
     }
 
     function disableAddCart() {
-      $elements.submit.val('Sold out').addClass('disabled').prop('disabled', true);
+      $elements.submit.val('Sold out').prop('disabled', true);
     }
 
     function enableAddCart() {
-      $elements.submit.removeClass('disabled').prop('disabled', false).val('Add to cart');
+      $elements.submit.val('Add to cart').prop('disabled', false);
     }
 
     function hideBackorder() {
@@ -163,22 +163,21 @@
       type: 'ajax',
 
       ajax: {
-        dataFilter: function(data){
+        dataFilter: function(data) {
           return $(data).filter('.js-single-product');
         }
       },
 
-      beforeShow: function() {
-        beforeShow();
-        new Shopify.OptionSelectors('js-os-select', {
-          product: GLOBALS.product,
-          onVariantSelected: selectCallback
-        });
-      }
+      beforeShow: beforeShow
 
     });
 
     function beforeShow() {
+      new Shopify.OptionSelectors('js-os-select', {
+        product: GLOBALS.product,
+        onVariantSelected: selectCallback
+      });
+
       /**
         Crude example of how to modify the product DOM when it's inside the modal.
        */

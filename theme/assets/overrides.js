@@ -39,5 +39,5 @@ Shopify.Image.getFileName = function(url) {
     // Remove size
     .replace(/_(1024x1024|2048x2048|pico|icon|thumb|small|compact|medium|large|grande)\./, '.')
     // Remove file extension and query string
-    .replace(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i, '')
+    .replace(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i, '');
 }
