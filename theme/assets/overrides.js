@@ -34,8 +34,8 @@ Shopify.OptionSelectors.prototype.buildSelectors = function() {
 
 Shopify.Image.getFileName = function(url) {
   return url
-    // Remove everything up to 'products/'
-    .split('products/').pop()
+    // Remove everything before (and including) the last `/`
+    .replace(/^.*\/(.*)$/, '$1')
     // Remove size
     .replace(/_(1024x1024|2048x2048|pico|icon|thumb|small|compact|medium|large|grande)\./, '.')
     // Remove file extension and query string
