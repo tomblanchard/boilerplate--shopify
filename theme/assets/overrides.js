@@ -1,5 +1,5 @@
 /**
-  {{ 'option_selection.js' | shopify_asset_url }}
+  http://cdn.shopify.com/s/shopify/option_selection.js - Line 313
  */
 
 Shopify.OptionSelectors.prototype.buildSelectors = function() {
@@ -31,6 +31,10 @@ Shopify.OptionSelectors.prototype.buildSelectors = function() {
   return elements;
 };
 
+
+/**
+  New function, it returns the name of a product image from its URL.
+ */
 
 Shopify.Image.getFileName = function(url) {
   return url
