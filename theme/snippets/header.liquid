@@ -7,12 +7,12 @@
   <ul>
     {% for link in linklists.main-menu.links %}<!--
       {% assign child_list_handle = link.title | handleize %}
-   --><li>
+   --><li class="{% if link.active %}active{% endif %}">
         <a href="{{ link.url }}">{{ link.title }}</a>
         {% if linklists[child_list_handle].links != blank %}
           <ul>
             {% for childlink in linklists[child_list_handle].links %}<!--
-           --><li>
+           --><li class="{% if childlink.active %}active{% endif %}">
                 <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
               </li><!--
          -->{% endfor %}
