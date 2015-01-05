@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           cwd: 'src/scss/framework',
           src: ['**/*.scss'],
           dest: 'theme/assets',
-          ext: '.min.css'
+          ext: '.min.css.liquid'
         }]
       }
     },
@@ -62,7 +62,10 @@ module.exports = function(grunt) {
 
       shopify: {
         files: ['theme/**/*'],
-        tasks: ['shopify']
+        tasks: ['shopify'],
+        options: {
+          interval: 500
+        }
       }
     }
 

@@ -155,23 +155,16 @@
     var $product = '.js-single-product';
 
     $('.js-quick-view').fancybox({
-
       autoSize: false,
-
       width: 1100,
-
       height: 600,
-
       type: 'ajax',
-
       ajax: {
         dataFilter: function(data) {
           return $(data).filter($product);
         }
       },
-
       beforeShow: beforeShow
-
     });
 
     var $modalProduct;
