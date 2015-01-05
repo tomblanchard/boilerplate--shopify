@@ -37,7 +37,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'theme/assets',
-          src: ['*.css'],
+          src: ['*.css.liquid'],
           dest: 'theme/assets'
         }]
       }
