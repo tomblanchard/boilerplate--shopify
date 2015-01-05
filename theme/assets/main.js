@@ -152,6 +152,8 @@
 
   (function() {
 
+    var $product = '.js-single-product';
+
     $('.js-quick-view').fancybox({
 
       autoSize: false,
@@ -164,7 +166,7 @@
 
       ajax: {
         dataFilter: function(data) {
-          return $(data).filter('.js-single-product');
+          return $(data).filter($product);
         }
       },
 
@@ -172,10 +174,10 @@
 
     });
 
-    var $product;
+    var $modalProduct;
 
     function beforeShow() {
-      $product = $('.fancybox-inner .js-single-product');
+      $modalProduct = $('.fancybox-inner').find($product);
       optionSelectors();
       modifyDomExample();
     }
@@ -194,7 +196,7 @@
       Crude example of how to modify the product DOM when it's inside the modal.
      */
     function modifyDomExample() {
-      $product.find('form').css('background', 'red');
+      $modalProduct.find('form').css('background', 'red');
     }
 
   })();
