@@ -172,16 +172,29 @@
 
     });
 
+    var $product;
+
     function beforeShow() {
+      $product = $('.fancybox-inner .js-single-product');
+      optionSelectors();
+      modifyDomExample();
+    }
+
+    /**
+      Initialize `Shopify.OptionSelectors`.
+     */
+    function optionSelectors() {
       new Shopify.OptionSelectors('js-os-select', {
         product: GLOBALS.product,
         onVariantSelected: selectCallback
       });
+    }
 
-      /**
-        Crude example of how to modify the product DOM when it's inside the modal.
-       */
-      $('.fancybox-inner').find('form').css('background', 'red');
+    /**
+      Crude example of how to modify the product DOM when it's inside the modal.
+     */
+    function modifyDomExample() {
+      $product.find('form').css('background', 'red');
     }
 
   })();
