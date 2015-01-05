@@ -22,6 +22,11 @@
       form: $('.js-os-form')
     }
 
+    /**
+      Check if the product is inside a quick view modal.
+     */
+    var inModal = $(selector.variantIdField).parents('.fancybox-inner').length;
+
     function updatePrice() {
       var onSale = variant.compare_at_price > variant.price;
       var price = Shopify.formatMoney( variant.price, GLOBALS.shopMoneyFormat );
