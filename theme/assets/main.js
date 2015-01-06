@@ -180,7 +180,6 @@
       init: function() {
         module = this;
         module.product = '.js-single-product';
-        module.modalProduct = '';
         module.fancybox();
       },
 
