@@ -9,143 +9,159 @@
     http://bit.ly/1wCSYCP
    */
 
-  function selectCallback(variant, selector) {
+  var selectCallback = (function() {
 
-    var $elements = {
-      price: $('.js-os-price'),
-      comparePrice: $('.js-os-compare-price'),
-      cycle: $('.js-os-cycle'),
-      cycleSlide: $('.js-os-cycle-slide'),
-      cyclePager: $('.js-os-cycle-pager'),
-      submit: $('.js-os-submit'),
-      backorder: $('.js-os-backorder'),
-      form: $('.js-os-form')
-    }
+    var module;
 
-    /**
-      Check if the product is inside a quick view modal.
-     */
-    var inModal = $(selector.variantIdField).parents('.fancybox-inner').length;
+    return {
 
-    function updatePrice() {
-      var onSale = variant.compare_at_price > variant.price;
-      var price = Shopify.formatMoney( variant.price, GLOBALS.shopMoneyFormat );
-      $elements.price.html( price );
-      if ( onSale ) {
-        var comparePrice = Shopify.formatMoney(variant.compare_at_price, GLOBALS.shopMoneyFormat);
-        $elements.comparePrice.html( comparePrice );
-      } else {
-        $elements.comparePrice.empty();
-      }
-    }
+      init: function(enableHistoryState) {
+        enableHistoryState = typeof enableHistoryState !== 'undefined' ? enableHistoryState : true;
+        module = this;
 
-    /**
-      Requires jQuery.Cycle2.
-     */
-    function initCycle() {
-      $elements.cycle.cycle({
-        slides: $elements.cycleSlide,
-        timeout: 0,
-        pager: $elements.cyclePager,
-        pagerTemplate: ''
-      });
-    }
-
-    function updateImage() {
-      var newImage = Shopify.Image.getFileName( variant.featured_image.src );
-      $elements.cycleSlide.not('.cycle-sentinel').each(function(index) {
-        var matchedImage = Shopify.Image.getFileName( $(this).attr('href') );
-        if( newImage == matchedImage ) {
-          $elements.cycle.cycle('goto', index);
+        if( $('#js-os-select').length ) {
+          new Shopify.OptionSelectors('js-os-select', {
+            product: GLOBALS.product,
+            onVariantSelected: module.doStuff,
+            enableHistoryState: enableHistoryState
+          });
         }
-      });
-    }
+      },
 
-    function disableAddCart() {
-      $elements.submit.val('Sold out').prop('disabled', true);
-    }
+      doStuff: function(variant, selector) {
+        module.variant = variant;
+        module.selector = selector;
 
-    function enableAddCart() {
-      $elements.submit.val('Add to cart').prop('disabled', false);
-    }
+        module.elements = {
+          price: $('.js-os-price'),
+          comparePrice: $('.js-os-compare-price'),
+          cycle: $('.js-os-cycle'),
+          cycleSlide: $('.js-os-cycle-slide'),
+          cyclePager: $('.js-os-cycle-pager'),
+          submit: $('.js-os-submit'),
+          backorder: $('.js-os-backorder'),
+          form: $('.js-os-form')
+        }
 
-    function hideBackorder() {
-      $elements.backorder.empty();
-    }
+        if (module.variant) {
 
-    function showBackorder() {
-      var variantTitle = GLOBALS.productTitle + ( !GLOBALS.productHideDefaultTitle ? ' - ' + variant.title : '' );
-      var message = variantTitle + ' is back-ordered. We will ship it separately in 10 to 15 days.';
-      $elements.backorder.html( message );
-    }
+          module.updatePrice();
 
-    function bindAddToCartForm() {
-      unbindAddToCartForm();
-      $elements.form.on('submit', addCartAjax);
-    }
+          module.initCycle();
 
-    function unbindAddToCartForm() {
-      $elements.form.off('submit');
-    }
+          if (module.variant.featured_image) {
+            module.updateImage();
+          }
 
-    function addCartAjax() {
-      $.ajax({
-        type: 'POST',
-        url: '/cart/add.js',
-        dataType: 'json',
-        data: {
-          quantity: 1,
-          id: variant.id
-        },
-        success: addCartSuccess,
-        error: addCartError
-      });
-      return false;
-    }
+          if (module.variant.available) {
+            module.enableAddCart();
+            module.bindAddToCartForm();
+            if ( module.variant.inventory_management && module.variant.inventory_quantity <= 0 ) {
+              module.showBackorder();
+            } else {
+              module.hideBackorder();
+            }
+          } else {
+            module.hideBackorder();
+            module.disableAddCart();
+            module.unbindAddToCartForm();
+          }
 
-    function addCartSuccess(data) {
-      alert( data.title + ' was added to your cart.' );
-    }
+        }
+      },
 
-    function addCartError(data) {
-      alert( data.responseJSON.message + ' - ' + data.responseJSON.description );
-    }
+      // Check if the product is inside a quick view modal.
+      inModal: function() {
+        return $(module.selector.module.variantIdField).parents('.fancybox-inner').length;
+      },
 
-    if (variant) {
-
-      updatePrice();
-
-      initCycle();
-
-      if (variant.featured_image) {
-        updateImage();
-      }
-
-      if (variant.available) {
-        enableAddCart();
-        bindAddToCartForm();
-        if ( variant.inventory_management && variant.inventory_quantity <= 0 ) {
-          showBackorder();
+      updatePrice: function() {
+        var onSale = module.variant.compare_at_price > module.variant.price;
+        var price = Shopify.formatMoney( module.variant.price, GLOBALS.shopMoneyFormat );
+        module.elements.price.html( price );
+        if ( onSale ) {
+          var comparePrice = Shopify.formatMoney(module.variant.compare_at_price, GLOBALS.shopMoneyFormat);
+          module.elements.comparePrice.html( comparePrice );
         } else {
-          hideBackorder();
+          module.elements.comparePrice.empty();
         }
-      } else {
-        hideBackorder();
-        disableAddCart();
-        unbindAddToCartForm();
+      },
+
+      // Requires jQuery.Cycle2.
+      initCycle: function() {
+        module.elements.cycle.cycle({
+          slides: module.elements.cycleSlide,
+          timeout: 0,
+          pager: module.elements.cyclePager,
+          pagerTemplate: ''
+        });
+      },
+
+      updateImage: function() {
+        var newImage = Shopify.Image.getFileName( module.variant.featured_image.src );
+        module.elements.cycleSlide.not('.cycle-sentinel').each(function(index) {
+          var matchedImage = Shopify.Image.getFileName( $(this).attr('href') );
+          if( newImage == matchedImage ) {
+            module.elements.cycle.cycle('goto', index);
+          }
+        });
+      },
+
+      disableAddCart: function() {
+        module.elements.submit.val('Sold out').prop('disabled', true);
+      },
+
+      enableAddCart: function() {
+        module.elements.submit.val('Add to cart').prop('disabled', false);
+      },
+
+      hideBackorder: function() {
+        module.elements.backorder.empty();
+      },
+
+      showBackorder: function() {
+        var variantTitle = GLOBALS.productTitle + ( !GLOBALS.productHideDefaultTitle ? ' - ' + module.variant.title : '' );
+        var message = variantTitle + ' is back-ordered. We will ship it separately in 10 to 15 days.';
+        module.elements.backorder.html( message );
+      },
+
+      bindAddToCartForm: function() {
+        module.unbindAddToCartForm();
+        module.elements.form.on('submit', module.addCartAjax);
+      },
+
+      unbindAddToCartForm: function() {
+        module.elements.form.off('submit');
+      },
+
+      addCartAjax: function() {
+        $.ajax({
+          type: 'POST',
+          url: '/cart/add.js',
+          dataType: 'json',
+          data: {
+            quantity: 1,
+            id: module.variant.id
+          },
+          success: module.addCartSuccess,
+          error: module.addCartError
+        });
+        return false;
+      },
+
+      addCartSuccess: function(data) {
+        alert( data.title + ' was added to your cart.' );
+      },
+
+      addCartError: function(data) {
+        alert( data.responseJSON.message + ' - ' + data.responseJSON.description );
       }
 
     }
 
-  };
+  })();
 
-  if( $('#js-os-select').length ) {
-    new Shopify.OptionSelectors('js-os-select', {
-      product: GLOBALS.product,
-      onVariantSelected: selectCallback,
-      enableHistoryState: true
-    });
-  }
+  selectCallback.init();
 
 
 
@@ -155,49 +171,55 @@
     Product quick view modal (requires jQuery.fancyBox).
    */
 
-  (function() {
+  var quickView = (function() {
 
-    var $product = '.js-single-product';
+    var module;
 
-    $('.js-quick-view').fancybox({
-      autoSize: false,
-      width: 1100,
-      height: 600,
-      type: 'ajax',
-      ajax: {
-        dataFilter: function(data) {
-          return $(data).filter($product);
-        }
+    return {
+
+      init: function() {
+        module = this;
+        module.product = '.js-single-product';
+        module.modalProduct = '';
+        module.fancybox();
       },
-      beforeShow: beforeShow
-    });
 
-    var $modalProduct;
+      fancybox: function() {
+        $('.js-quick-view').fancybox({
+          autoSize: false,
+          width: 1100,
+          height: 600,
+          type: 'ajax',
+          ajax: {
+            dataFilter: function(data) {
+              return $(data).filter(module.product);
+            }
+          },
+          beforeShow: module.beforeShow
+        });
+      },
 
-    function beforeShow() {
-      $modalProduct = $('.fancybox-inner').find($product);
-      optionSelectors();
-      modifyDomExample();
-    }
+      beforeShow: function() {
+        module.modalProduct = $('.fancybox-inner').find(module.product);
+        module.optionSelectors();
+        module.modifyDomExample();
+      },
 
-    /**
-      Initialize `Shopify.OptionSelectors`.
-     */
-    function optionSelectors() {
-      new Shopify.OptionSelectors('js-os-select', {
-        product: GLOBALS.product,
-        onVariantSelected: selectCallback
-      });
-    }
+      // Initialize `Shopify.OptionSelectors`.
+      optionSelectors: function() {
+        selectCallback.init(false);
+      },
 
-    /**
-      Crude example of how to modify the product DOM when it's inside the modal.
-     */
-    function modifyDomExample() {
-      $modalProduct.find('form').css('background', 'red');
-    }
+      // Crude example of how to modify the product DOM when it's inside the modal.
+      modifyDomExample: function() {
+        module.modalProduct.find('form').css('background', 'red');
+      }
+
+    };
 
   })();
+
+  quickView.init();
 
 
 
