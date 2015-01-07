@@ -70,7 +70,7 @@
 
       // Check if the product is inside a quick view modal.
       inModal: function() {
-        return $(module.selector.module.variantIdField).parents('.fancybox-inner').length;
+        return $(module.selector.variantIdField).parents('.fancybox-inner').length;
       },
 
       updatePrice: function() {
