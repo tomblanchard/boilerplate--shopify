@@ -22,13 +22,13 @@
         if( $('#js-os-select').length ) {
           new Shopify.OptionSelectors('js-os-select', {
             product: GLOBALS.product,
-            onVariantSelected: module.doStuff,
+            onVariantSelected: module.selectCallback,
             enableHistoryState: enableHistoryState
           });
         }
       },
 
-      doStuff: function(variant, selector) {
+      selectCallback: function(variant, selector) {
         module.variant = variant;
         module.selector = selector;
 
@@ -68,7 +68,7 @@
         }
       },
 
-      // Check if the product is inside a quick view modal.
+      // Check (returns true/false) if the product is inside a quick view modal.
       inModal: function() {
         return $(module.selector.variantIdField).parents('.fancybox-inner').length;
       },
@@ -76,7 +76,9 @@
       updatePrice: function() {
         var onSale = module.variant.compare_at_price > module.variant.price;
         var price = Shopify.formatMoney( module.variant.price, GLOBALS.shopMoneyFormat );
+
         module.elements.price.html( price );
+
         if ( onSale ) {
           var comparePrice = Shopify.formatMoney(module.variant.compare_at_price, GLOBALS.shopMoneyFormat);
           module.elements.comparePrice.html( comparePrice );
@@ -97,6 +99,7 @@
 
       updateImage: function() {
         var newImage = Shopify.Image.getFileName( module.variant.featured_image.src );
+
         module.elements.cycleSlide.not('.cycle-sentinel').each(function(index) {
           var matchedImage = Shopify.Image.getFileName( $(this).attr('href') );
           if( newImage == matchedImage ) {
@@ -120,6 +123,7 @@
       showBackorder: function() {
         var variantTitle = GLOBALS.productTitle + ( !GLOBALS.productHideDefaultTitle ? ' - ' + module.variant.title : '' );
         var message = variantTitle + ' is back-ordered. We will ship it separately in 10 to 15 days.';
+
         module.elements.backorder.html( message );
       },
 
@@ -178,6 +182,7 @@
       init: function() {
         module = this;
         module.product = '.js-single-product';
+
         module.fancybox();
       },
 
@@ -198,13 +203,10 @@
 
       beforeShow: function() {
         module.modalProduct = $('.fancybox-inner').find(module.product);
-        module.optionSelectors();
-        module.modifyDomExample();
-      },
 
-      // Initialize `Shopify.OptionSelectors`.
-      optionSelectors: function() {
+        // We want all the `OptionSelectors` goodness here to.
         OptionSelectors.init(false);
+        module.modifyDomExample();
       },
 
       // Crude example of how to modify the product DOM when it's inside the modal.
