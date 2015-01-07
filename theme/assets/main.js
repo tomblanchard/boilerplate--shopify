@@ -18,9 +18,10 @@
       init: function(enableHistoryState) {
         enableHistoryState = typeof enableHistoryState !== 'undefined' ? enableHistoryState : true;
         module = this;
+        module.existingSelectorId = 'js-os-select';
 
-        if( $('#js-os-select').length ) {
-          new Shopify.OptionSelectors('js-os-select', {
+        if( document.getElementById(module.existingSelectorId) ) {
+          new Shopify.OptionSelectors(module.existingSelectorId, {
             product: GLOBALS.product,
             onVariantSelected: module.selectCallback,
             enableHistoryState: enableHistoryState
