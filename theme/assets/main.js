@@ -155,7 +155,7 @@
         alert( data.responseJSON.message + ' - ' + data.responseJSON.description );
       }
 
-    }
+    };
 
   })();
 
