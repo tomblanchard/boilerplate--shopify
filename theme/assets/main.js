@@ -9,7 +9,7 @@
     http://bit.ly/1wCSYCP
    */
 
-  var selectCallback = (function() {
+  var OptionSelectors = (function() {
 
     var module;
 
@@ -44,7 +44,6 @@
         }
 
         if (module.variant) {
-
           module.updatePrice();
 
           module.initCycle();
@@ -66,7 +65,6 @@
             module.disableAddCart();
             module.unbindAddToCartForm();
           }
-
         }
       },
 
@@ -161,7 +159,7 @@
 
   })();
 
-  selectCallback.init();
+  OptionSelectors.init();
 
 
 
@@ -171,7 +169,7 @@
     Product quick view modal (requires jQuery.fancyBox).
    */
 
-  var quickView = (function() {
+  var QuickView = (function() {
 
     var module;
 
@@ -206,7 +204,7 @@
 
       // Initialize `Shopify.OptionSelectors`.
       optionSelectors: function() {
-        selectCallback.init(false);
+        OptionSelectors.init(false);
       },
 
       // Crude example of how to modify the product DOM when it's inside the modal.
@@ -218,7 +216,7 @@
 
   })();
 
-  quickView.init();
+  QuickView.init();
 
 
 
