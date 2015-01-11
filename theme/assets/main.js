@@ -5,8 +5,7 @@
 
 
   /**
-    Multiple product option dropdowns, basically a modified version of
-    http://bit.ly/1wCSYCP
+    Multiple product option dropdowns, modified version of http://bit.ly/1wCSYCP
    */
 
   var OptionSelectors = (function() {
@@ -69,7 +68,7 @@
         }
       },
 
-      // Check (returns true/false) if the product is inside a quick view modal.
+      // Check if the product is inside a quick view modal (returns true/false).
       inModal: function() {
         return $(module.selector.variantIdField).parents('.fancybox-inner').length;
       },
